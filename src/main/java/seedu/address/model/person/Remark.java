@@ -7,8 +7,16 @@ import static java.util.Objects.requireNonNull;
  * Guarantees: immutable; is always valid
  */
 public class Remark {
+    /**
+     * The Value.
+     */
     public final String value;
 
+    /**
+     * Instantiates a new Remark.
+     *
+     * @param remark the remark
+     */
     public Remark(String remark) {
         requireNonNull(remark);
         value = remark;
