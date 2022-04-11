@@ -397,7 +397,7 @@ The filter feature was implemented in such a way that it aligns with the format 
 
 ### **Grab Command**
 #### Rationale
-The grab feature allows user to grab any attribute (as defined in [Enchanced Person Object](#) (except `Tag`) of anyone in UNite. The grab result will be displayed in UNite and users can efficiently compile the needed data.
+The grab feature allows user to grab any attribute (as defined in [Enhanced Person Object](#) (except `Tag`) of anyone in UNite. The grab result will be displayed in UNite and users can efficiently compile the needed data.
 
 #### Implementation
 There are two class related to grab features, they are `GrabCommand` and `GrabCommandParser`. Note the following relationship:
@@ -421,7 +421,7 @@ Step 2. The command is passed from `logic.LogicManager`into `logic.parser.UniteP
 Step 3. The `GrabCommandParser` parses the arguments using `ArgumentTokenizer` and returns a `GrabCommand` object
 if there is no parse exception.
 
-Step 4. During the execution of grab command, a `CommandException` is thrown if the input is invalid (see activity diagram above). Otherwise, Otherwise a `CommandResult` containing the String of the attribute being grabbed from the correct `Person` is returned to user.
+Step 4. During the execution of grab command, a `CommandException` is thrown if the input is invalid (see activity diagram above). Otherwise, a `CommandResult` containing the String of the attribute being grabbed from the correct `Person` is returned to user.
 
 ![GrabSequenceDiagram](images/GrabSequenceDiagram.png)
 
@@ -442,23 +442,80 @@ Hence, we avoided this potential confusion by imposing an additional constraint 
 
 <div style="page-break-after: always;"></div>
 
-### **View detailed profile**
-In the original AB3 Address Book, all information about a person are displayed within the respective `PersonCard`. This
-limits the amount of information a user can see at one time. If simply increase the size, or more specifically, the
-height of a `PersonCard`, less person will be displayed of the same window size.
+### **General Display**
+#### Rationale
+In the original AB3, command outcomes are only displayed in `ResultDisplay` in the form of plain texts. The `GeneralDisplay` is meant to present user with the command outcome in an intuitive way, it adapts to user's command. If the user performs commands that are related to person (`AddCommand`, `AttachTagCommand`, `DeleteCommand`, `DetachTagCommand`, `EditCommand` and `ProfileCommand`), `GeneralDisplay` will show the `Profile`. If the user performs commands that are related to tag (`AddTagCommand`, `ClearEmptyTagCommand`, `DeleteTagCommand`, `ListTagCommand` and `RemarkCommand`), `GeneralDisplay` will show the `TagList`. If the user performs a `GrabCommand`, `GeneralDisplay` will show the `GrabResult`.
 
-Therefore, in UNite, the main display window has been divided into two parts. On the left-hand side, it is the
-conventional `PersonListPanel`, on the right-hand side, is the newly implemented `Profile` window to display more
-information about a person.
+#### Implementation
+* `GeneralDisplay` composites of 3 Java objects (HAS-A relationship), they are `Profile`, `TagList` and `GrabResult`.
+* `GeneralDisplay` is extended from `Ui<Part>`.
+* Being an `Ui` component, `GeneralDisplay` also has 3 JavaFX objects, they are placeholders for `Profile`, `TagList` and `GrabResult` in the form of `StackPane`.
+
+The activity diagram below summarizes how `GeneralDisplay` is being updated, using the execution of `DeleteCommand` as a case study.
+Even though `DeleteCommand` is not using the same ui update signal as other `Commands` that update `Profile`, the underlying implementation is the same.
+In short, the difference between `DeleteCommand` and other `Commands` that update `Profile`, is that `GeneralDisplay` needs an additional check
+1. If the `Person` require deletion is currently being displayed in `Profile`, reset `Profile`.
+2. Otherwise, `GeneralDisplay` remains unchanged.
+
+![GeneralDisplayActivityDiagram](images/GeneralDisplayActivityDiagram.png)
+
+#### Design Consideration
+**Aspect: Commands execution to notify how `GeneralDisplay` should change** <br>
+There are multiple ways for a command to update the `GeneralDisplay`, or broadly speaking, `Ui` components in general.
+
+- **Alternative 1 (current choice)** <br>
+  From each `Command` object's `execute()` method, notify `ModelManger` what is the change in Ui that is required, along with the necessary data. `MainWindow` then fetches this update signal from `ModelManager` during every command executions, and correspondingly notify `GeneralDisplay` what is to be changed. Depending on the requirement, `GeneralDisplay` will then set the relevant Ui component to visible and the irrelevant ones to hidden (placeholders for `Profile`, `TagList` and `GrabResult`), and finally update the relevant object (`Profile`, `TagList` and `GrabResult`) with the necessary data to present the updated display to the user.
+  * Pros: This design choice complies with the MVC pattern nicely. Passes all the testings out of the box. Coupling is minimized.
+  * Cons: Hard to see the implementation in the first place and need to be implemented carefully. Which brings the following alternative design.
+
+- **Alternative 2 (the design before the current choice)** <br>
+  With the power of polymorphism, overload the `CommandResult` constructor to fit the needs of different commands. `MainWindow` fetches the Ui update requests from the `CommandResult` object together with the command feedbacks, and notify `GeneralDisplay` accordingly.
+  * Pros: This design partially uses the MVC pattern, but bypasses the nicely designed `ModelManager`.
+  * Cons: Code is not elegant, overloaded `CommandResult` constructors is badly organized and difficult to trace through. Reduces testabily greatly as `assertCommandSuccess` needs to be overloaded as well to support all variations of `CommandResult`.
+
+- **Alternative 3 (the original choice)** <br>
+  From each `Command` object's `execute()` method, update the `GeneralDisplay` directly by exposing `MainWindow` to `Command` through `ModelManger`. 
+  * Naive solution.
+  * Cons: Produces way too many side effects and breaks the MVC pattern. All the testings failed. The exposure of `MainWindow` can be abused.
+
+We stayed with Alternative 1 in the end as it is obviously the better design choice compare to the other 2. We came all the way from Alternative 3 to Alternative 1 and now truly understood the essence of MVC pattern.
+
 
 <div style="page-break-after: always;"></div>
 
-### **Theme choosing**
-In the original AB3 Address Book, there is no choice for the user to style up the appearance of the application. Given
-that the target users of UNite are school admins and students, we want to give users a choice to change between a light and a
-dark theme, so that the application fits better to the vibrant energy of a university.
+### **Theme switching**
+#### Rationale
+In the original AB3 Address Book, there is no choice for the user to style up the application, the user would also want to change the appearance of the application depending on their current environment. Given that the target users of UNite are school admins and students, we want to give users a choice to change between a light and a dark theme, so that the application fits better to the vibrant energy of a university.
 
+#### Implementation
+There are two class related to switch theme features, they are `SwitchThemeCommand` and `SwitchThemeCommandParser`. Note the following relationship:
+* `SwitchThemeCommand` is a class extending `Command` class. The Command object will then be executed. Read [here](#logic-component) to understand how `Command` works.
+* `SwitchThemeCommandParser` is a class extending the `Parser` class, it is used to parse the command entered by user.
 
+The activity diagram below summarizes what happens when a switch theme command is executed.
+In short, there are only two valid inputs for user to successfully switch theme: light and dark.
+1. If the provided theme is valid, MainWindow will apply the theme to itself, AddProfileWindow and AddTagWindow.
+2. If the provided theme is invalid, nothing is changed.
+
+![SwitchThemeCommandActivityDiagram](images/SwitchThemeCommandActivityDiagram.png)
+
+Given below is an example usage scenario of switch theme command.
+
+Step 1. UNite is opened by the user and ready to receive commands. The user types in the command `theme light`.
+
+Step 2. The command is passed from `logic.LogicManager`into `logic.parser.UniteParser` which creates a `SwitchThemeCommandParser` object.
+
+Step 3. The `SwitchThemeCommandParser` parses the arguments returns a `SwitchThemeCommand` object if there is no parse exception.
+
+Step 4. During the execution of switch theme command, a `CommandException` is thrown if the input is invalid (see activity diagram above). Otherwise, a `CommandResult` containing the theme being switch to is returned to the user, the theme gets updated.
+
+![SwitchThemeSequenceDiagram](images/SwitchThemeSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `SwitchThemeCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</div>
+
+#### Design Consideration
+SwitchThemeCommand obeys the MVC design pattern, so that `Logic` and `Ui` are communicated through `Model`.
 
 ### **\[Proposed\] Undo/redo feature**
 

@@ -1,0 +1,33 @@
+@startuml
+
+start
+:User type in delete person command;
+:Checks if the provided
+         index is valid;
+if () then ([Valid index])
+    : Notify ModelManager what
+      Ui component needs update;
+    : ModelManager updates the
+      Ui changing state within
+                        itself;
+    : MainWindow fetches the updated states
+                     from ModelManager;
+    : Profile Ui needs update;
+    : Notifies GeneralDisplay;
+
+    if () then ([Person needs to be deleted
+is now being shown in Profile])
+        : GeneralDisplay resets Profile to empty;
+    else ([Person needs to be deleted
+is not being shown in Profile])
+        : GeneralDisplay remains unchanged;
+    endif
+else ([Invalid index])
+  : Show error message;
+  : GeneralDisplay remains unchanged;
+endif
+
+stop
+
+@enduml
+

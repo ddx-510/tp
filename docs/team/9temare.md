@@ -64,13 +64,14 @@ Given below are my contributions to the project.
   * User Guide:
     * Update table of content and command summary [#91](https://github.com/AY2122S2-CS2103T-W12-2/tp/pull/91).
     * Update product screenshots [#125](https://github.com/AY2122S2-CS2103T-W12-2/tp/pull/125).
-    * Proofread user guide, make final changes and pdf conversion adjustments [#213](https://github.com/AY2122S2-CS2103T-W12-2/tp/pull/213).
+    * Proofread user guide, make final changes and pdf conversion adjustments [#213](https://github.com/AY2122S2-CS2103T-W12-2/tp/pull/213) [#218](https://github.com/AY2122S2-CS2103T-W12-2/tp/pull/218).
     
 
   * Developer Guide:
     * Added more use cases and NFRs [#39](https://github.com/AY2122S2-CS2103T-W12-2/tp/pull/39).
     * Added information for profile and switch theme features [#73](https://github.com/AY2122S2-CS2103T-W12-2/tp/pull/73).
-    * Added implementation detail for `SwitchThemeCommand` [#89](https://github.com/AY2122S2-CS2103T-W12-2/tp/pull/89).
+    * Added implementation detail for `SwitchThemeCommand` [#89](https://github.com/AY2122S2-CS2103T-W12-2/tp/pull/89) [#218](https://github.com/AY2122S2-CS2103T-W12-2/tp/pull/218).
+    * Added implementation detail for `GeneralDisplay` [#218](https://github.com/AY2122S2-CS2103T-W12-2/tp/pull/218).
 
 
 ### Community:

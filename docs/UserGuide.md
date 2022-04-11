@@ -2,11 +2,12 @@
 layout: page
 title: User Guide
 ---
-
 UNite is a **desktop app for managing contacts specifically designed for people in University**. It is optimized for use via a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI). If you want an easy-to-use app to manage your University contacts, UNIte is the right place to go!
+
 
 * **Table of Contents**
 {:toc}
+
 
 --------------------------------------------------------------------------------------------------------------------
 <div style="page-break-after: always;"></div>
@@ -195,7 +196,9 @@ Examples:
 
 List out all tags current exist in UNite.
 
-![list_tag](images/list_tag.png)
+<p align="center">
+    <img src="images/list_tag.png" width="500"/>
+</p>
 
 Format: `list_tag`
 <div style="page-break-after: always;"></div>
@@ -267,8 +270,10 @@ Examples:
 * `find John` returns `john` and `John Doe`
 * `find alex david` returns `Alex Yeoh`, `David Li`<br>
 
+<p align="center">
+    <img src="images/find_yu_li.png" width="500"/>
+</p>
 
-  ![result for 'find yu li'](images/find_yu_li.png)
 
 <div style="page-break-after: always;"></div>
 
@@ -292,7 +297,10 @@ Examples:
 * `grab tele/` <br> Grabs the telegram id of everyone inside UNite.
 * `grab tele/ t/friends` <br> Grabs the telegram id of everyone tagged as "friends" inside UNite.
 
-<img src="images/grab-email.png" width="300"/>
+<p align="center">
+    <img src="images/grab-email.png" width="500"/>
+</p>
+
 
 <div style="page-break-after: always;"></div>
 
@@ -322,12 +330,17 @@ Format: `theme THEME`
 Examples:
 * `theme dark` changes UNite to dark theme, which is also the default theme.
 
-<img src="images/dark_theme.png" width="300"/>
+<p align="center"> 
+    <img src="images/dark_theme.png" width="500"/>
+</p>
+
 <div style="page-break-after: always;"></div>
 
 * `theme light` changes UNite to light theme.
 
-<img src="images/light_theme.png" width="300"/>
+<p align="center"> 
+    <img src="images/light_theme.png" width="500"/>
+</p>
 
 <div style="page-break-after: always;"></div>
 
@@ -343,7 +356,10 @@ Format: `profile INDEX`
 
 Examples:
 * `list` followed by `profile 2` displays the 2nd person's profile at the right-hand side.
-<img src="images/profile.png" width="400"/>
+<p align="center">
+    <img src="images/profile.png" width="400"/>
+</p>
+
 * `filter friends` followed by `profile 3` displays the 3rd person's profile in the filtered list generated
 by the `filter`command.
 * `find Betsy` followed by `profile 1` displays the 1st person's profile in the results of the `find` command.
@@ -387,10 +403,10 @@ enter the command in the command box and follow the instructions in the previous
 
 Shown below are the annotated screenshots of UNite for reference to UI components:
 
-
-<img src="images/UNite_annotated.png" width="300"/>  <img src="images/UNite_profile.png" width="300"/> <br>
-<img src="images/UNite_taglist.png" width="300"/>  <img src="images/UNite_grabresult.png" width="300"/>
-
+<p align="center">
+    <img src="images/UNite_annotated.png" width="400"/>  <img src="images/UNite_profile.png" width="400"/> <br>
+<img src="images/UNite_taglist.png" width="400"/>  <img src="images/UNite_grabresult.png" width="400"/>
+</p>
 
 <div style="page-break-after: always;"></div>
 
@@ -398,7 +414,9 @@ Shown below are the annotated screenshots of UNite for reference to UI component
 Enables mouse interaction in mouseUX. After enabling mouse interactions, 3 new buttons ("Add", "Tags" and "Theme") will
 appear on the menu bar as shown in the figure below.
 
-<img src="images/enableMouseUX_menuBar.png" width="250"/>
+<p align="center">
+    <img src="images/enableMouseUX_menuBar.png" width="250"/>
+</p>
 
 Right-click operation is also enabled for both person list panel and tag list.
 
@@ -422,7 +440,9 @@ To view a profile, left-click on the person in the person list panel. As mention
 To add a new profile, click the `Add` button in menu bar, and select `Add Profile`. An **Add Profile pop-up
 window** will appear.
 
-<img src="images/addProfileNew_popup.png" width="250"/>
+<p align="center">
+    <img src="images/addProfileNew_popup.png" width="250"/>
+</p>
 
 In the window, simply enter all related information into the spaces provided, and click the
 `Save` button to add a new profile. Click `Cancel` to stop adding and close the pop-up window.
@@ -433,7 +453,9 @@ In the window, simply enter all related information into the spaces provided, an
 
 To delete a person, right-click on the profile and select `Delete`.
 
-<img src="images/deleteProfile_GUI.png" width="250"/>
+<p align="center">
+    <img src="images/deleteProfile_GUI.png" width="250"/>
+</p>
 
 
 ### Add a new tag<a name="add-a-new-tag-click"></a>
@@ -452,18 +474,24 @@ selection. Select the tag(s) to delete, and click the `Delete` button to delete 
 
 Selected tags will appear in white, as shown in the figure below ("friends", "classmates" and "Professors" selected).
 
-<img src="images/selectedTag_GUI.png" width="250"/>
+<p align="center">
+    <img src="images/selectedTag_GUI.png" width="250"/>
+</p>
 
 Another approach to delete a tag one at a time is to right-click on a tag in tag list, and click on `Delete Tag` as shown below.
 
-<img src="images/selectedTag_taglist.png" width="250"/>
+<p align="center">
+    <img src="images/selectedTag_taglist.png" width="250"/>
+</p>
 
 <div style="page-break-after: always;"></div>
 
 ### Filter list by tag<a name="filter-list-by-tag-click"></a>
 To filter the list of person by tag directly, first display all the tags by input the command `list_tag`, then simply left-click on the tag to filter the list. As mentioned, this feature is enabled by default and cannot be disabled.
 
-<img src="images/filter-through-click.png" width="300"/>
+<p align="center">
+    <img src="images/filter-through-click.png" width="300"/>
+</p>
 
 --------------------------------------------------------------------------------------------------------------------
 <div style="page-break-after: always;"></div>

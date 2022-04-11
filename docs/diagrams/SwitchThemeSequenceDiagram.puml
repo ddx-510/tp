@@ -7,8 +7,12 @@ participant ":UniteParser" as UniteParser LOGIC_COLOR
 participant ":SwitchThemeCommandParser" as SwitchThemeCommandParser LOGIC_COLOR
 participant "t:LightTheme" as LightTheme LOGIC_COLOR
 participant "s:SwitchThemeCommand" as SwitchThemeCommand LOGIC_COLOR
-participant "primaryStage: Stage" as PrimaryStage LOGIC_COLOR
 participant ":CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+participant "t:Theme" as Theme MODEL_COLOR
 end box
 
 [-> LogicManager : execute("theme light")
@@ -48,25 +52,28 @@ deactivate SwitchThemeCommandParser
 SwitchThemeCommandParser -[hidden]-> UniteParser
 destroy SwitchThemeCommandParser
 
+UniteParser --> LogicManager: s
+
 LogicManager -> SwitchThemeCommand : execute()
 activate SwitchThemeCommand
 
-create PrimaryStage
-SwitchThemeCommand -> PrimaryStage : applyTheme()
-activate PrimaryStage
+create Theme
+SwitchThemeCommand -> Theme: LightTheme
+activate Theme
 
-PrimaryStage -> SwitchThemeCommand:
-deactivate PrimaryStage
+Theme --> SwitchThemeCommand: t
+deactivate Theme
 
-create CommandResult
-SwitchThemeCommand -> CommandResult
-activate CommandResult
+SwitchThemeCommand -> Model : switchTheme(t)
+activate Model
 
-CommandResult -> SwitchThemeCommand
-deactivate CommandResult
+Model -> SwitchThemeCommand
+deactivate Model
 
-SwitchThemeCommand --> LogicManager: result
-deactivate
+SwitchThemeCommand -> LogicManager
+deactivate SwitchThemeCommand
+SwitchThemeCommandParser -[hidden]-> UniteParser
+destroy SwitchThemeCommand
 
 [<--LogicManager
 deactivate LogicManager

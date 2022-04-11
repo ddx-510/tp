@@ -1,0 +1,25 @@
+@startuml
+
+start
+:User type in switch theme command;
+:Checks if the provided
+         theme is valid;
+if () then ([Valid theme])
+    : Notify ModelManager what
+    theme needs to be updated to;
+    : ModelManager updates the
+           theme within itself;
+    : MainWindow fetches the required
+             theme to change to;
+    : MainWindow applies the theme
+    to itself, AddProfileWindow and
+                AddTagWindow;
+else ([Invalid theme])
+  : Show error message;
+  : Theme remains unchanged;
+endif
+
+stop
+
+@enduml
+
